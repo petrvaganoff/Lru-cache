@@ -3,9 +3,10 @@
 #include <thread>
 #include "LruCache.hpp"
 
+int fast_get_page_int(const int key) { return key; }
+
 // slow get page imitation
-int slow_get_page_int(int key)
-{
+int slow_get_page_int(const int key) {
     std::cout << "< ... Network request ...";
     std::cout.flush();
 
@@ -20,29 +21,24 @@ int slow_get_page_int(int key)
 int main() {
     int hits = 0;
     int miss = 0;
-    int n;
-    size_t m;
+    size_t size;
+    size_t amount;
 
-    std::cout << "Введите размер кэша: ";
-    std::cin >> m;
+    std::cin >> size;
+    std::cin >> amount;
 
-    std::cout << "Введите кол-во элементов кэша: ";
-    std::cin >> n;
+    caches::LruCache<int, int> cache{size};
 
-    caches::LruCache<int, int> c{m};
-
-    std::cout << "Вводите элементы кэша: " << std::endl;
-    for (int i = 0; i < n; ++i) {
-        int q;
-        std::cin >> q;
-        if (c.lookup_update(q, slow_get_page_int))
+    for (size_t i = 0; i < amount; i++) {
+        int page;
+        std::cin >> page;
+        if (cache.lookup_update(page, fast_get_page_int))
             hits++;
         else
             miss++;
     }
 
-    std::cout << "Hits: " << hits << std::endl;
-    std::cout << "Mits: " << miss << std::endl;
+    std::cout << hits << std::endl;
 
     return 0;
 }
