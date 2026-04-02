@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(cache main.cpp
     LruCache.hpp
+    LfuCache.hpp
 )
 
 include(GNUInstallDirs)

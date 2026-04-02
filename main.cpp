@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string_view>
 #include "LruCache.hpp"
+#include "LfuCache.hpp"
 
 
 int fast_get_page_int(const int key) { return key; }
@@ -36,11 +37,12 @@ int main(int argc, char* argv[]) {
     std::string_view mode{argv[1]};
 
     if (mode == "--lru") {
-        caches::LruCache<int, int>  cache{size};
+        caches::LruCache<int, int> cache{size};
         hits = process_requests(cache, amount);
     } else if (mode == "--lfu") {
-        std::cout << "Error: not implemented.\n";
-        return 1;
+        caches::LfuCache<int, int> cache{size};
+        // TODO: вынести отдельно, использовать указатель на cache
+        hits = process_requests(cache, amount);
     } else {
         std::cout << "Error: wrong argument.\n";
         return 1;
